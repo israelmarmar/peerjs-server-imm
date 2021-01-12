@@ -11,7 +11,7 @@
     "branch": "master"
   },
   "dependencies": {
-    "peer": "^0.5.3"
+    "peer": "^0.5.3",
     "express": "^4.17.1"
   },
   "engines": {
