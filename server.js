@@ -1,3 +1,5 @@
+const cors = require('cors')
+
 // server.js
 // where your node app starts
 
@@ -8,6 +10,7 @@ const express = require("express");
 const { ExpressPeerServer } = require("peer");
 
 const app = express();
+app.use(cors())
 
 // listen for requests :)
 const listener = app.listen(process.env.PORT || 9000, () => {
