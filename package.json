@@ -4,7 +4,7 @@
   "description": "PeerJS server component",
   "author": "Michelle Bu, Eric Zhang, Alex Sosnovskiy",
   "license": "MIT",
-  "start": "node server.js"
+  "start": "node server.js",
   "scripts": {
     "start": "node server.js"
   },
