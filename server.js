@@ -1,4 +1,6 @@
-const cors = require('cors')
+const cors = require('cors');
+const fetch = require("node-fetch");
+let connected = [];
 
 // server.js
 // where your node app starts
@@ -20,8 +22,35 @@ const listener = app.listen(process.env.PORT || 9000, () => {
 // peerjs server
 const peerServer = ExpressPeerServer(listener, {
   debug: true,
-  path: '/myapp',
-  allow_discovery: true
+  path: '/myapp'
+});
+
+peerServer.on('connection', function (client) {
+  var idx = connected.indexOf(client.id); // only add id if it's not in the list yet
+  if (idx === -1) {connected.push(client.id);}
+});
+
+peerServer.on('disconnect', function (client) {
+  var idx = connected.indexOf(client.id); // only attempt to remove id if it's in the list
+  if (idx !== -1) {connected.splice(idx, 1);}
+});
+
+app.get('/', function(req, res) {
+  res.json(connected);
+});
+
+app.get('/chunkeds', async function(req, res) {
+
+  if(req.query.urls){
+  const chunkeds = JSON.parse(req.query.urls);
+
+  const scripts = await Promise.all(chunkeds.map(u=>fetch(u))).then(responses =>
+    Promise.all(responses.map(res => res.text()))
+  );
+
+  res.json(scripts);
+  }else
+  res.json([]);
 });
 
 app.use('/peerjs', peerServer);
