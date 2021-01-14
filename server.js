@@ -23,7 +23,8 @@ const listener = app.listen(process.env.PORT || 9000, () => {
 // peerjs server
 const peerServer = ExpressPeerServer(listener, {
   path: '/myapp',
-  debug: true
+  debug: true,
+  key: "peerjs"
 });
 
 peerServer.on('connection', function (client) {
