@@ -41,7 +41,7 @@ peerServer.on('disconnect', function (client) {
   if (idx !== -1) {connected.splice(idx, 1);}
 });
 
-app.get('/', function(req, res) {
+app.get('/peers', function(req, res) {
   res.json(connected);
 });
 
