@@ -12,14 +12,11 @@ const express = require("express");
 const { ExpressPeerServer } = require("peer");
 
 const app = express();
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+
+app.use(cors);
 
 // listen for requests :)
-const listener = app.listen(9000, () => {
+const listener = app.listen(process.env.PORT || 9000, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
 
