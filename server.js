@@ -26,10 +26,6 @@ const peerServer = ExpressPeerServer(listener, {
   path: '/myapp',
   debug: true,
   key: "peerjs",
-  ssl: {
-    key: fs.readFileSync('./server.key'),
-    cert: fs.readFileSync('./server.crt')
-  }
 });
 
 peerServer.on('connection', function (client) {
