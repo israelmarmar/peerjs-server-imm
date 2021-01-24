@@ -1,5 +1,6 @@
 const cors = require('cors');
 const fetch = require("node-fetch");
+const fs = require('fs');
 let connected = [];
 
 // server.js
@@ -25,10 +26,10 @@ const peerServer = ExpressPeerServer(listener, {
   path: '/myapp',
   debug: true,
   key: "peerjs",
-  concurrent_limit: 5000,
-  allow_discovery: false,
-  proxied: false,
-  cleanup_out_msgs: 1000,
+  ssl: {
+    key: fs.readFileSync('./server.key'),
+    cert: fs.readFileSync('./server.crt')
+  }
 });
 
 peerServer.on('connection', function (client) {
@@ -51,7 +52,7 @@ app.get('/chunkeds', async function(req, res) {
   const chunkeds = JSON.parse(req.query.urls);
 
   const scripts = await Promise.all(chunkeds.map(u=>fetch(u))).then(responses =>
-    Promise.all(responses.map(res => res.text()))
+    Promise.all(responses.map(res => `/* ${res.src} */${res.text()}`))
   );
 
   res.json(scripts);
