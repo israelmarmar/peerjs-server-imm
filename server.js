@@ -25,7 +25,7 @@ const listener = app.listen(process.env.PORT || 9000, () => {
 const peerServer = ExpressPeerServer(listener, {
   path: '/myapp',
   debug: true,
-  key: "peerjs",
+  key: "peerjs"
 });
 
 peerServer.on('connection', function (client) {
@@ -47,10 +47,11 @@ app.get('/chunkeds', async function(req, res) {
   if(req.query.urls){
   const chunkeds = JSON.parse(req.query.urls);
 
-  const scripts = await Promise.all(chunkeds.map(u=>fetch(u))).then(responses =>
-    Promise.all(responses.map(res => `/* ${res.src} */${res.text()}`))
+  let scripts = await Promise.all(chunkeds.map(u=>fetch(u))).then(responses =>
+    Promise.all(responses.map(res => res.text()))
   );
 
+  scripts = scripts.map(script => `/* ${res.url} */ ${script}`)
   res.json(scripts);
   }else
   res.json([]);
