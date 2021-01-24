@@ -51,7 +51,7 @@ app.get('/chunkeds', async function(req, res) {
     Promise.all(responses.map(res => res.text()))
   );
 
-  scripts = scripts.map((script, index) => `/* ${chunkeds[index]} */ ${script}`)
+  scripts = scripts.map((script, index) => script)
   res.json(scripts);
   }else
   res.json([]);
